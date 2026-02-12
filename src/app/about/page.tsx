@@ -10,7 +10,6 @@ import {
   scrollViewport,
 } from "@/lib/animations";
 
-
 const milestones = [
   {
     label: "Licensed Activities",
@@ -67,9 +66,8 @@ export default function AboutPage() {
                 operating across five integrated verticals — Banking Services
                 Consultancy, Human Resources Consultancy, Management Consultancies,
                 Organization & Event Management, and Consulting & R&D in
-                Technology Education. We
-                deliver integrated advisory that connects capital, talent, and
-                logistics into one coherent operating model.
+                Technology Education. We deliver integrated advisory that connects
+                capital, talent, and logistics into one coherent operating model.
               </motion.p>
             </motion.div>
           </div>
@@ -121,14 +119,14 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Leadership */}
+        {/* Leadership (SANITIZED) */}
         <section className="py-16">
           <div className="mx-auto max-w-7xl px-6">
             <motion.p
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={scrollViewport}
-              className="text-center text-lg"
+              className="text-center text-lg italic"
               style={{ color: "var(--color-text-muted)" }}
             >
               Led by experienced professionals across five licensed verticals.
