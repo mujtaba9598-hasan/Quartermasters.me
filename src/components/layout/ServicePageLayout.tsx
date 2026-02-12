@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { motion } from "framer-motion";
 import { type LucideIcon } from "lucide-react";
@@ -11,7 +9,6 @@ import {
   staggerItem,
   scrollViewport,
 } from "@/lib/animations";
-import { useSector } from "@/lib/SectorContext";
 import type { SectorKey } from "@/lib/design-tokens";
 
 interface ServiceCapability {
