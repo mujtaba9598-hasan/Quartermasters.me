@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 // Constants
 export const COOKIE_NAME = 'qm_consent'
 export const GEO_COOKIE_NAME = 'qm_geo_mode'
 export const MIN_EXPIRY_DAYS = 365
 
-// Default State (Must match CEO spec: Analytics ON by default for CCPA/PDPL, OFF for GDPR)
+// Default State
 export type ConsentState = {
     essential: boolean
     analytics: boolean
@@ -15,8 +15,15 @@ export type ConsentState = {
     preferences: boolean
 }
 
+const DEFAULT_CONSENT: ConsentState = {
+    essential: true,
+    analytics: false,
+    marketing: false,
+    preferences: false
+}
+
 // Helpers
-function getCookie(name: string): string | null {
+const getCookie = (name: string): string | null => {
     if (typeof document === 'undefined') return null
     const value = `; ${document.cookie}`
     const parts = value.split(`; ${name}=`)
@@ -24,7 +31,7 @@ function getCookie(name: string): string | null {
     return null
 }
 
-function setCookie(name: string, value: string, days: number = MIN_EXPIRY_DAYS) {
+const setCookie = (name: string, value: string, days: number = MIN_EXPIRY_DAYS) => {
     const date = new Date()
     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000))
     const expires = `expires=${date.toUTCString()}`
@@ -32,86 +39,76 @@ function setCookie(name: string, value: string, days: number = MIN_EXPIRY_DAYS) 
 }
 
 export function useConsent() {
-    const [consent, setConsent] = useState<ConsentState>({
-        essential: true,
-        analytics: false,
-        marketing: false,
-        preferences: false
+    // Lazy initialization for consent
+    const [consent, setConsent] = useState<ConsentState>(() => {
+        const existing = getCookie(COOKIE_NAME)
+        if (existing) {
+            try {
+                return JSON.parse(existing)
+            } catch {
+                return DEFAULT_CONSENT
+            }
+        }
+        return DEFAULT_CONSENT
     })
-    const [geoMode, setGeoMode] = useState<string>('default')
-    const [hasConsented, setHasConsented] = useState(false)
+
+    // Lazy initialization for geoMode
+    const [geoMode, setGeoMode] = useState<string>(() => {
+        return getCookie(GEO_COOKIE_NAME) || 'default'
+    })
+
+    const [hasConsented, setHasConsented] = useState(() => {
+        return !!getCookie(COOKIE_NAME)
+    })
+
     const [isLoaded, setIsLoaded] = useState(false)
     const [showBanner, setShowBanner] = useState(false)
 
-    useEffect(() => {
-        // 1. Determine Region Mode
-        const mode = getCookie(GEO_COOKIE_NAME) || 'default' // gdpr | ccpa | pdpl | default
-        setGeoMode(mode)
-
-        // 2. Check Existing Consent
-        const existing = getCookie(COOKIE_NAME)
-
-        if (existing) {
-            try {
-                setConsent(JSON.parse(existing))
-                setHasConsented(true)
-                setShowBanner(false)
-            } catch (e) {
-                // Invalid consent, clear it
-                initDefaults(mode)
-            }
+    const initDefaults = useCallback((mode: string) => {
+        if (mode === 'gdpr') {
+            setConsent({ essential: true, analytics: false, marketing: false, preferences: false })
         } else {
-            // No consent yet, initialize defaults based on region
+            setConsent({ essential: true, analytics: true, marketing: false, preferences: false })
+        }
+    }, [])
+
+    useEffect(() => {
+        // Initialization happened in useState, but we need to show banner if no consent
+        const existing = getCookie(COOKIE_NAME)
+        if (!existing) {
+            const mode = getCookie(GEO_COOKIE_NAME) || 'default'
             initDefaults(mode)
             setShowBanner(true)
         }
-
         setIsLoaded(true)
-    }, [])
+    }, [initDefaults])
 
-    const initDefaults = (mode: string) => {
-        // GDPR: Opt-in (Everything OFF except essential)
-        if (mode === 'gdpr') {
-            setConsent({ essential: true, analytics: false, marketing: false, preferences: false })
-        }
-        // CCPA/PDPL/Default: Opt-out (Analytics ON by default per prompt requirement)
-        else {
-            setConsent({ essential: true, analytics: true, marketing: false, preferences: false })
-        }
-    }
-
-    const saveConsent = (ct: ConsentState) => {
+    const saveConsent = useCallback((ct: ConsentState) => {
         setCookie(COOKIE_NAME, JSON.stringify(ct))
         setConsent(ct)
         setHasConsented(true)
         setShowBanner(false)
 
-        // Trigger analytics load if consented
         if (ct.analytics) {
             if (typeof window !== 'undefined') {
-                // TODO: Integrate PostHog conditional loading here. 
-                // Do not load analytics scripts until consent.analytics === true in GDPR mode.
-                // PostHog or GTM reload trigger should be initialized here.
                 window.dispatchEvent(new Event('consent-updated'))
             }
         }
-    }
+    }, [])
 
-    const acceptAll = () => saveConsent({ essential: true, analytics: true, marketing: true, preferences: true })
-    const rejectAll = () => saveConsent({ essential: true, analytics: false, marketing: false, preferences: false })
-    const acceptCurrent = () => saveConsent(consent)
+    const acceptAll = useCallback(() => saveConsent({ essential: true, analytics: true, marketing: true, preferences: true }), [saveConsent])
+    const rejectAll = useCallback(() => saveConsent({ essential: true, analytics: false, marketing: false, preferences: false }), [saveConsent])
 
     return {
-        consent,
         geoMode,
+        consent,
         hasConsented,
         isLoaded,
         showBanner,
         setShowBanner,
-        setConsent,
-        saveConsent,
         acceptAll,
         rejectAll,
-        acceptCurrent
+        saveConsent,
+        setConsent
     }
 }

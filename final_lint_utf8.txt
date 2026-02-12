@@ -1,0 +1,64 @@
+﻿
+> quartermasters-nexus@0.1.0 lint
+> eslint
+
+
+C:\Users\Mujtaba Hasan\Downloads\Kitchen\Quartermasters 3\quartermasters-nexus\src\components\compliance\CookieConsentBanner.tsx
+  4:18  warning  'ChevronDown' is defined but never used  @typescript-eslint/no-unused-vars
+  4:31  warning  'ChevronUp' is defined but never used    @typescript-eslint/no-unused-vars
+
+C:\Users\Mujtaba Hasan\Downloads\Kitchen\Quartermasters 3\quartermasters-nexus\src\components\home\FlowConnector.tsx
+  10:33  warning  'direction' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Mujtaba Hasan\Downloads\Kitchen\Quartermasters 3\quartermasters-nexus\src\components\layout\FooterTicker.tsx
+   6:7   warning  'socket' is assigned a value but never used          @typescript-eslint/no-unused-vars
+  11:20  warning  'setMessages' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  19:23  warning  'setIsConnected' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Mujtaba Hasan\Downloads\Kitchen\Quartermasters 3\quartermasters-nexus\src\components\services\FinancialClient.tsx
+  3:10  warning  'motion' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Mujtaba Hasan\Downloads\Kitchen\Quartermasters 3\quartermasters-nexus\src\components\ui\CookieConsent.tsx
+  12:11  error    An empty interface declaration allows any non-nullish value, including literals like `0` and `""`.
+- If that's what you want, disable this lint rule with an inline comment or configure the 'allowInterfaces' rule option.
+- If you want a type meaning "any object", you probably want `object` instead.
+- If you want a type meaning "any value", you probably want `unknown` instead                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-empty-object-type
+  12:11  warning  'CookieConsentProps' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-unused-vars
+  53:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Mujtaba Hasan\Downloads\Kitchen\Quartermasters 3\quartermasters-nexus\src\components\ui\CookieConsent.tsx:53:13
+  51 |
+  52 |         if (euCountries.includes(country)) {
+> 53 |             setRegion('EU')
+     |             ^^^^^^^^^ Avoid calling setState() directly within an effect
+  54 |             setConsent({ necessary: true, analytics: false, marketing: false }) // GDPR: Opt-in
+  55 |         } else if (country === 'US' || country === 'CA') {
+  56 |             setRegion('US-CA')  react-hooks/set-state-in-effect
+
+C:\Users\Mujtaba Hasan\Downloads\Kitchen\Quartermasters 3\quartermasters-nexus\src\hooks\useConsent.ts
+  60:9  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Mujtaba Hasan\Downloads\Kitchen\Quartermasters 3\quartermasters-nexus\src\hooks\useConsent.ts:60:9
+  58 |         // 1. Determine Region Mode
+  59 |         const mode = getCookie(GEO_COOKIE_NAME) || 'default'
+> 60 |         setGeoMode(mode)
+     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  61 |
+  62 |         // 2. Check Existing Consent
+  63 |         const existing = getCookie(COOKIE_NAME)  react-hooks/set-state-in-effect
+
+Γ£û 11 problems (3 errors, 8 warnings)
+
+
