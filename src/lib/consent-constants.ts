@@ -21,12 +21,17 @@ export const REGIONS = {
 }
 
 export type ConsentState = {
-    [K in keyof typeof CONSENT_CATEGORIES]: boolean
+    essential: boolean
+    analytics: boolean
+    marketing: boolean
+    preferences: boolean
 }
 
+
 export const DEFAULT_CONSENT: ConsentState = {
-    ESSENTIAL: true,
-    ANALYTICS: false,
-    MARKETING: false,
-    PREFERENCES: false,
+    essential: true,
+    analytics: false,
+    marketing: false,
+    preferences: false,
 }
+

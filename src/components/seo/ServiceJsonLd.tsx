@@ -32,7 +32,7 @@ export function ServiceJsonLd({ service }: {
             }
         ],
         "url": service.url,
-        "image": service.image || "https://quartermasters.me/og-image.jpg"
+        ...(service.image && { "image": service.image })
     }
 
     return (

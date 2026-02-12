@@ -10,9 +10,6 @@ import {
   scrollViewport,
 } from "@/lib/animations";
 
-const leadership: Array<{ name: string, role: string, description: string }> = [
-  // Leadership profiles removed per directive
-];
 
 const milestones = [
   {
@@ -125,70 +122,17 @@ export default function AboutPage() {
         </section>
 
         {/* Leadership */}
-        <section className="py-24">
+        <section className="py-16">
           <div className="mx-auto max-w-7xl px-6">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={scrollViewport}
-              variants={staggerContainer}
+              className="text-center text-lg"
+              style={{ color: "var(--color-text-muted)" }}
             >
-              <motion.p variants={staggerItem} className="text-overline mb-4">
-                Leadership
-              </motion.p>
-              <motion.h2 variants={staggerItem} className="heading-2 mb-12">
-                The People Behind the Strategy.
-              </motion.h2>
-
-              <motion.div
-                variants={staggerContainer}
-                className="grid grid-cols-1 gap-6 md:grid-cols-2"
-              >
-                {leadership.map((person) => (
-                  <motion.div
-                    key={person.name}
-                    variants={staggerItem}
-                    className="glass glass-hover rounded-xl p-8"
-                    whileHover={{
-                      y: -4,
-                      boxShadow: "0 20px 40px rgba(193, 90, 44, 0.08)",
-                    }}
-                    transition={{ duration: 0.36, ease: [0.16, 1, 0.3, 1] }}
-                  >
-                    {/* Avatar placeholder */}
-                    <div
-                      className="mb-6 flex h-16 w-16 items-center justify-center rounded-full text-xl font-bold"
-                      style={{
-                        fontFamily: "var(--font-heading)",
-                        background: "rgba(193, 90, 44, 0.1)",
-                        color: "var(--color-accent-gold)",
-                      }}
-                    >
-                      {person.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </div>
-                    <h3 className="heading-4 mb-1">{person.name}</h3>
-                    <p
-                      className="mb-4 text-xs font-medium uppercase tracking-widest"
-                      style={{
-                        fontFamily: "var(--font-heading)",
-                        color: "var(--color-accent-gold)",
-                      }}
-                    >
-                      {person.role}
-                    </p>
-                    <p
-                      className="text-sm leading-relaxed"
-                      style={{ color: "var(--color-text-muted)" }}
-                    >
-                      {person.description}
-                    </p>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
+              Led by experienced professionals across five licensed verticals.
+            </motion.p>
           </div>
         </section>
 
