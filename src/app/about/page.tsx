@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SmoothScroll } from "@/components/features/SmoothScroll";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import {
@@ -11,19 +10,8 @@ import {
   scrollViewport,
 } from "@/lib/animations";
 
-const leadership = [
-  {
-    name: "Sumera Khan",
-    role: "Manager / Shareholder",
-    description:
-      "Strategic oversight across all five licensed verticals with focus on regulatory compliance and organizational governance.",
-  },
-  {
-    name: "Syed Haroon Haider Gilani",
-    role: "Manager / Shareholder",
-    description:
-      "Driving operational excellence and cross-vertical integration for client delivery and business development.",
-  },
+const leadership: Array<{ name: string, role: string, description: string }> = [
+  // Leadership profiles removed per directive
 ];
 
 const milestones = [
@@ -51,7 +39,7 @@ const milestones = [
 
 export default function AboutPage() {
   return (
-    <SmoothScroll>
+    <>
       <Header />
       <main className="pt-24">
         {/* Hero */}
@@ -244,6 +232,6 @@ export default function AboutPage() {
         </section>
       </main>
       <Footer />
-    </SmoothScroll>
+    </>
   );
 }

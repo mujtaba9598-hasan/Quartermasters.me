@@ -15,6 +15,7 @@ const footerLinks = {
     { label: "Contact", href: "/contact" },
     { label: "Client Portal", href: "/portal" },
     { label: "Knowledge Base", href: "/knowledge-base" },
+    { label: "Cookie Preferences", href: "#", onclick: "deleteCookiePreferences" },
     { label: "Terms of Service", href: "/terms" },
     { label: "Privacy Policy", href: "/privacy" },
   ],

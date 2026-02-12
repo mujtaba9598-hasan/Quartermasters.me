@@ -66,14 +66,6 @@ export const metadata: Metadata = {
   }
 };
 
-import { SmoothScroll } from "@/components/features/SmoothScroll";
-
-// ... (existing imports)
-
-import { HexHiveNav } from "@/components/layout/HexHiveNav";
-
-// ... (existing imports)
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -88,10 +80,7 @@ export default function RootLayout({
         className={`${spaceGrotesk.variable} ${inter.variable} antialiased`}
       >
         <Providers>
-          <SmoothScroll>
-            {children}
-            <HexHiveNav />
-          </SmoothScroll>
+          {children}
         </Providers>
       </body>
     </html>

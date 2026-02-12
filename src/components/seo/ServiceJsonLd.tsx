@@ -17,10 +17,20 @@ export function ServiceJsonLd({ service }: {
             "url": "https://quartermasters.me"
         },
         "serviceType": service.name,
-        "areaServed": {
-            "@type": "Country",
-            "name": "United Arab Emirates"
-        },
+        "areaServed": [
+            {
+                "@type": "Country",
+                "name": "United Arab Emirates"
+            },
+            {
+                "@type": "Place",
+                "name": "GCC Region"
+            },
+            {
+                "@type": "Place",
+                "name": "Global"
+            }
+        ],
         "url": service.url,
         "image": service.image || "https://quartermasters.me/og-image.jpg"
     }

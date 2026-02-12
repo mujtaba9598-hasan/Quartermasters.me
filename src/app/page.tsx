@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { HeroSection } from "@/components/home/HeroSection";
-import { BentoGrid } from "@/components/home/BentoGrid";
 import { PhaseGate } from "@/components/home/PhaseGate";
 import { GlobeSection } from "@/components/home/GlobeSection";
 import { SearchBar } from "@/components/home/SearchBar";
@@ -122,7 +121,6 @@ export default function HomePage() {
         {/* Visual sections — client islands that hydrate with animations */}
         <HeroSection />
         <FlowConnector />
-        <BentoGrid />
         <FlowConnector />
         <GlobeSection />
         <FlowConnector />
