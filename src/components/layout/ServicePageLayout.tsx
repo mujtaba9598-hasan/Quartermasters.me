@@ -50,13 +50,8 @@ export function ServicePageLayout({
   backgroundPattern,
   sectorKey,
 }: ServicePageProps) {
-  const { setActiveSector } = useSector();
-
-  // Set active sector on mount, clear on unmount
-  React.useEffect(() => {
-    if (sectorKey) setActiveSector(sectorKey);
-    return () => setActiveSector(null);
-  }, [sectorKey, setActiveSector]);
+  // Note: Sector context removed as this is now a server component
+  // Sector theming still works via CSS variables based on route
   const Wrapper = CardWrapper ?? (({ children }: { children: React.ReactNode }) => (
     <motion.div
       className="glass glass-hover rounded-xl p-6 transition-all"
