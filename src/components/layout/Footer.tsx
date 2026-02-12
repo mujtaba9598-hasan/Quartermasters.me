@@ -155,14 +155,13 @@ export function Footer() {
               >
                 Subject to UAE Government Authority Approvals
               </p>
-            </p>
-            <div className="mt-2 text-[10px] text-emerald-500/50 font-mono">
-              v2.1-CLEAN-BUILD
+              <div className="mt-2 text-[10px] text-emerald-500/50 font-mono">
+                v2.1-CLEAN-BUILD
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    </footer >
+    </footer>
   );
 }
