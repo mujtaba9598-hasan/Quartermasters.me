@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { staggerContainer, staggerItem } from "@/lib/animations";
-import { MagneticButton } from "@/components/ui/MagneticButton";
 import { TextShimmer } from "@/components/ui/TextShimmer";
 
 export function HeroSection() {
@@ -78,7 +77,7 @@ export function HeroSection() {
 
           {/* CTAs */}
           <motion.div variants={staggerItem} className="flex flex-wrap gap-4">
-            <MagneticButton href="#services" strength={0.25}>
+            <a href="#services">
               <span
                 className="inline-block rounded-lg px-8 py-3.5 text-sm font-semibold transition-all"
                 style={{
@@ -90,8 +89,8 @@ export function HeroSection() {
               >
                 Explore Capabilities
               </span>
-            </MagneticButton>
-            <MagneticButton href="#methodology" strength={0.25}>
+            </a>
+            <a href="#methodology">
               <span
                 className="inline-block rounded-lg px-8 py-3.5 text-sm font-semibold transition-all"
                 style={{
@@ -103,7 +102,7 @@ export function HeroSection() {
               >
                 Our Methodology
               </span>
-            </MagneticButton>
+            </a>
           </motion.div>
 
           {/* Trust Badges */}

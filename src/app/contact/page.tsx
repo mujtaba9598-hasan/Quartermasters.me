@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Send, MapPin, Mail, Phone, Loader2 } from "lucide-react";
-import { SmoothScroll } from "@/components/features/SmoothScroll";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import {
@@ -60,7 +59,7 @@ export default function ContactPage() {
   }
 
   return (
-    <SmoothScroll>
+    <>
       <Header />
       <main className="pt-24">
         {/* Hero */}
@@ -191,12 +190,12 @@ export default function ContactPage() {
                             color: "var(--color-text-base)",
                           }}
                           onFocus={(e) =>
-                            (e.target.style.borderColor =
-                              "var(--color-accent-gold)")
+                          (e.target.style.borderColor =
+                            "var(--color-accent-gold)")
                           }
                           onBlur={(e) =>
-                            (e.target.style.borderColor =
-                              "var(--glass-border)")
+                          (e.target.style.borderColor =
+                            "var(--glass-border)")
                           }
                           placeholder="Your name"
                         />
@@ -227,12 +226,12 @@ export default function ContactPage() {
                             color: "var(--color-text-base)",
                           }}
                           onFocus={(e) =>
-                            (e.target.style.borderColor =
-                              "var(--color-accent-gold)")
+                          (e.target.style.borderColor =
+                            "var(--color-accent-gold)")
                           }
                           onBlur={(e) =>
-                            (e.target.style.borderColor =
-                              "var(--glass-border)")
+                          (e.target.style.borderColor =
+                            "var(--glass-border)")
                           }
                           placeholder="you@company.com"
                         />
@@ -262,12 +261,12 @@ export default function ContactPage() {
                             color: "var(--color-text-base)",
                           }}
                           onFocus={(e) =>
-                            (e.target.style.borderColor =
-                              "var(--color-accent-gold)")
+                          (e.target.style.borderColor =
+                            "var(--color-accent-gold)")
                           }
                           onBlur={(e) =>
-                            (e.target.style.borderColor =
-                              "var(--glass-border)")
+                          (e.target.style.borderColor =
+                            "var(--glass-border)")
                           }
                           placeholder="Company name"
                         />
@@ -296,12 +295,12 @@ export default function ContactPage() {
                             color: "var(--color-text-muted)",
                           }}
                           onFocus={(e) =>
-                            (e.target.style.borderColor =
-                              "var(--color-accent-gold)")
+                          (e.target.style.borderColor =
+                            "var(--color-accent-gold)")
                           }
                           onBlur={(e) =>
-                            (e.target.style.borderColor =
-                              "var(--glass-border)")
+                          (e.target.style.borderColor =
+                            "var(--glass-border)")
                           }
                         >
                           <option value="">Select a service</option>
@@ -350,8 +349,8 @@ export default function ContactPage() {
                           color: "var(--color-text-base)",
                         }}
                         onFocus={(e) =>
-                          (e.target.style.borderColor =
-                            "var(--color-accent-gold)")
+                        (e.target.style.borderColor =
+                          "var(--color-accent-gold)")
                         }
                         onBlur={(e) =>
                           (e.target.style.borderColor = "var(--glass-border)")
@@ -540,6 +539,6 @@ export default function ContactPage() {
         </section>
       </main>
       <Footer />
-    </SmoothScroll>
+    </>
   );
 }

@@ -3,7 +3,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { type LucideIcon } from "lucide-react";
-import { SmoothScroll } from "@/components/features/SmoothScroll";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import {
@@ -74,7 +73,7 @@ export function ServicePageLayout({
   ));
 
   return (
-    <SmoothScroll>
+    <>
       <Header />
       <main className="pt-24">
         {/* Hero */}
@@ -239,6 +238,6 @@ export function ServicePageLayout({
         </section>
       </main>
       <Footer />
-    </SmoothScroll>
+    </>
   );
 }
