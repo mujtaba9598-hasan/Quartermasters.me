@@ -17,7 +17,7 @@ Strategic advisory on banking operations, regulatory compliance, capital structu
 
 ## Service Tiers & Deliverables
 
-### Express ($1,800 - $3,500)
+### Express ($1,500)
 - **Scope**: Initial compliance health check and account opening advisory.
 - **Deliverables**: Compliance Gap Analysis Report, Documentation Preparation Guide, Bank Introduction Service.
 - **Timeline**: 2-4 Weeks.

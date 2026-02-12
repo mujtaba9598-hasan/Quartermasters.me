@@ -17,7 +17,7 @@ High-stakes logistics, venue coordination, and event strategy execution. We spec
 
 ## Service Tiers & Deliverables
 
-### Express ($5,000 - $10,000)
+### Express ($1,000)
 - **Scope**: Production of a small corporate seminar or launch.
 - **Deliverables**: Run of Show, Venue Booking, Basic AV Setup.
 - **Timeline**: 4-6 Weeks.

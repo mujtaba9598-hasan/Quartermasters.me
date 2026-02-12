@@ -17,7 +17,7 @@ Strategic advisory for organizational leadership, governance frameworks, and ope
 
 ## Service Tiers & Deliverables
 
-### Express ($2,500 - $5,000)
+### Express ($1,800)
 - **Scope**: Strategic health check or business plan validation.
 - **Deliverables**: SWOT Analysis, Strategic Gap Report, Basic Financial Model Review.
 - **Timeline**: 2 Weeks.

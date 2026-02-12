@@ -89,8 +89,9 @@ export function useConsent() {
         // Trigger analytics load if consented
         if (ct.analytics) {
             if (typeof window !== 'undefined') {
-                // PostHog or GTM reload trigger could go here
-                // For now, we rely on page navigation or direct init
+                // TODO: Integrate PostHog conditional loading here. 
+                // Do not load analytics scripts until consent.analytics === true in GDPR mode.
+                // PostHog or GTM reload trigger should be initialized here.
                 window.dispatchEvent(new Event('consent-updated'))
             }
         }

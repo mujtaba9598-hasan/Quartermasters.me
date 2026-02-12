@@ -45,12 +45,14 @@ export default function CookieConsentBanner() {
                                 </div>
                                 <div>
                                     <h3 className="text-sm font-semibold text-white font-heading">
-                                        {geoMode === 'gdpr' ? 'Privacy Settings' : 'Cookie Notice'}
+                                        {geoMode === 'ccpa' ? 'Do Not Sell My Personal Information' : geoMode === 'gdpr' ? 'Privacy Settings' : 'Cookie Notice'}
                                     </h3>
                                     <p className="text-xs text-slate-400">
                                         {geoMode === 'gdpr'
                                             ? 'We respect your data privacy.'
-                                            : 'Enhancing expected experience.'}
+                                            : geoMode === 'pdpl'
+                                                ? 'Compliant with UAE PDPL'
+                                                : 'Enhancing your experience.'}
                                     </p>
                                 </div>
                             </div>
@@ -101,6 +103,20 @@ export default function CookieConsentBanner() {
                                         </button>
                                     </div>
 
+                                    {/* Category: Preferences */}
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <span className="font-medium text-white block">Preferences</span>
+                                            <span className="text-[10px] text-slate-500">Site customization and settings.</span>
+                                        </div>
+                                        <button
+                                            onClick={() => setConsent({ ...consent, preferences: !consent.preferences })}
+                                            className={`relative h-5 w-9 rounded-full transition-colors ${consent.preferences ? 'bg-[#C8A97E]' : 'bg-slate-700'}`}
+                                        >
+                                            <motion.div layout className={`absolute top-1 left-1 h-3 w-3 rounded-full bg-white shadow-sm ${consent.preferences ? 'translate-x-[16px]' : ''}`} />
+                                        </button>
+                                    </div>
+
                                     {/* Category: Marketing */}
                                     <div className="flex items-center justify-between">
                                         <div>
@@ -117,8 +133,12 @@ export default function CookieConsentBanner() {
                                 </div>
                             ) : (
                                 <p>
-                                    We use cookies to analyze traffic and enhance your experience.
-                                    {geoMode === 'gdpr' ? ' You must opt-in to non-essential cookies.' : ' You can adjust your preferences at any time.'}
+                                    {geoMode === 'ccpa'
+                                        ? 'Under California law, you have the right to opt-out of the sale of your personal information. Click "Manage Preferences" to control your data choices.'
+                                        : geoMode === 'pdpl'
+                                            ? 'We process data in accordance with the UAE Personal Data Protection Law (PDPL). Your data is handled securely  within our regulated framework.'
+                                            : 'We use cookies to analyze traffic and enhance your experience.'}
+                                    {geoMode === 'gdpr' ? ' You must opt-in to non-essential cookies.' : geoMode !== 'ccpa' && geoMode !== 'pdpl' ? ' You can adjust your preferences at any time.' : ''}
                                 </p>
                             )}
                         </div>

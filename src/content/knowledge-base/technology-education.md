@@ -17,7 +17,7 @@ Consulting for digital transformation, R&D strategy, and technology education in
 
 ## Service Tiers & Deliverables
 
-### Express ($3,000 - $7,000)
+### Express ($1,200)
 - **Scope**: Technology audit or curriculum review.
 - **Deliverables**: Technical Capability Assessment, Curriculum Gap Analysis.
 - **Timeline**: 2-4 Weeks.

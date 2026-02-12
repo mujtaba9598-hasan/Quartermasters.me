@@ -17,7 +17,7 @@ Strategic HR advisory focused on talent acquisition, workforce deployment, organ
 
 ## Service Tiers & Deliverables
 
-### Express ($1,500 - $3,000)
+### Express ($1,500)
 - **Scope**: HR policy review and compliance check.
 - **Deliverables**: Compliance Audit Report, updated Vendor Contracts, Basic Employee Handbook.
 - **Timeline**: 2 Weeks.
