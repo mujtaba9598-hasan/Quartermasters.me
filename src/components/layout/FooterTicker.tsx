@@ -1,14 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 
-const socket = io('https://quartermasters-api-placeholder.com', { // Need real endpoint
-  autoConnect: false,
-});
+// No active socket needed for now
+// const socket = io('https://quartermasters-api-placeholder.com', { // Need real endpoint
+//   autoConnect: false,
+// });
 
 export function FooterTicker() {
-  const [messages, setMessages] = useState<string[]>([
+  const [messages] = useState<string[]>([
     "OPERATIONAL STATUS: NOMINAL",
     "MARKET INDEX: +0.42%",
     "PORT ACTIVITY: HIGH",
@@ -16,7 +17,7 @@ export function FooterTicker() {
     "SECURITY LEVEL: ALPHA",
     "HR COMPLIANCE: 100%",
   ]);
-  const [isConnected, setIsConnected] = useState(false);
+  const [isConnected] = useState(false);
 
   useEffect(() => {
     // Ideally connect to real socket

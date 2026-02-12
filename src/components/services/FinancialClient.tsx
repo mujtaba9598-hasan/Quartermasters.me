@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Coins } from "lucide-react";
 import { ServicePageLayout } from "@/components/layout/ServicePageLayout";
 import { VaultEffect } from "@/components/ui/SectorEffects";

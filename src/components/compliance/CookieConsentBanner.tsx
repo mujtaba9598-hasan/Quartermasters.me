@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { Shield, ChevronDown, ChevronUp, Check, Settings, X } from 'lucide-react'
+import { Shield, Check, Settings, X } from 'lucide-react'
 import { useConsent } from '@/hooks/useConsent'
 import { useState } from 'react'
 

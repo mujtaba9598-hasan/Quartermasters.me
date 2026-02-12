@@ -7,7 +7,7 @@ interface FlowConnectorProps {
   direction?: "down" | "split";
 }
 
-export function FlowConnector({ direction = "down" }: FlowConnectorProps) {
+export function FlowConnector() {
   return (
     <motion.div
       initial={{ opacity: 0 }}

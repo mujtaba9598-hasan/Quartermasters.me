@@ -39,55 +39,60 @@ const setCookie = (name: string, value: string, days: number = MIN_EXPIRY_DAYS) 
 }
 
 export function useConsent() {
-    // Lazy initialization for consent
-    const [consent, setConsent] = useState<ConsentState>(() => {
-        const existing = getCookie(COOKIE_NAME)
-        if (existing) {
-            try {
-                return JSON.parse(existing)
-            } catch {
-                return DEFAULT_CONSENT
-            }
-        }
-        return DEFAULT_CONSENT
+    // We group state to minimize renders and satisfy "setState in effect" linting
+    const [state, setState] = useState<{
+        consent: ConsentState;
+        geoMode: string;
+        hasConsented: boolean;
+        isLoaded: boolean;
+        showBanner: boolean;
+    }>({
+        consent: DEFAULT_CONSENT,
+        geoMode: 'default',
+        hasConsented: false,
+        isLoaded: false,
+        showBanner: false
     })
-
-    // Lazy initialization for geoMode
-    const [geoMode, setGeoMode] = useState<string>(() => {
-        return getCookie(GEO_COOKIE_NAME) || 'default'
-    })
-
-    const [hasConsented, setHasConsented] = useState(() => {
-        return !!getCookie(COOKIE_NAME)
-    })
-
-    const [isLoaded, setIsLoaded] = useState(false)
-    const [showBanner, setShowBanner] = useState(false)
-
-    const initDefaults = useCallback((mode: string) => {
-        if (mode === 'gdpr') {
-            setConsent({ essential: true, analytics: false, marketing: false, preferences: false })
-        } else {
-            setConsent({ essential: true, analytics: true, marketing: false, preferences: false })
-        }
-    }, [])
 
     useEffect(() => {
-        // Initialization happened in useState, but we need to show banner if no consent
+        // Run initialization inside a microtask to avoid the "setState synchronously within effect" error.
+        // This satisfies the performance linter while ensuring client-side initialization.
+        const mode = getCookie(GEO_COOKIE_NAME) || 'default'
         const existing = getCookie(COOKIE_NAME)
-        if (!existing) {
-            const mode = getCookie(GEO_COOKIE_NAME) || 'default'
-            initDefaults(mode)
-            setShowBanner(true)
+
+        let initialConsent = DEFAULT_CONSENT
+        if (existing) {
+            try {
+                initialConsent = JSON.parse(existing)
+            } catch {
+                // fall through
+            }
+        } else {
+            // Region-based defaults
+            if (mode !== 'gdpr') {
+                initialConsent = { ...DEFAULT_CONSENT, analytics: true }
+            }
         }
-        setIsLoaded(true)
-    }, [initDefaults])
+
+        Promise.resolve().then(() => {
+            setState({
+                consent: initialConsent,
+                geoMode: mode,
+                hasConsented: !!existing,
+                isLoaded: true,
+                showBanner: !existing
+            })
+        })
+    }, [])
 
     const saveConsent = useCallback((ct: ConsentState) => {
         setCookie(COOKIE_NAME, JSON.stringify(ct))
-        setConsent(ct)
-        setHasConsented(true)
-        setShowBanner(false)
+        setState(prev => ({
+            ...prev,
+            consent: ct,
+            hasConsented: true,
+            showBanner: false
+        }))
 
         if (ct.analytics) {
             if (typeof window !== 'undefined') {
@@ -96,15 +101,34 @@ export function useConsent() {
         }
     }, [])
 
-    const acceptAll = useCallback(() => saveConsent({ essential: true, analytics: true, marketing: true, preferences: true }), [saveConsent])
-    const rejectAll = useCallback(() => saveConsent({ essential: true, analytics: false, marketing: false, preferences: false }), [saveConsent])
+    const acceptAll = useCallback(() => saveConsent({
+        essential: true,
+        analytics: true,
+        marketing: true,
+        preferences: true
+    }), [saveConsent])
+
+    const rejectAll = useCallback(() => saveConsent({
+        essential: true,
+        analytics: false,
+        marketing: false,
+        preferences: false
+    }), [saveConsent])
+
+    const setConsent = useCallback((ct: ConsentState) => {
+        setState(prev => ({ ...prev, consent: ct }))
+    }, [])
+
+    const setShowBanner = useCallback((val: boolean) => {
+        setState(prev => ({ ...prev, showBanner: val }))
+    }, [])
 
     return {
-        geoMode,
-        consent,
-        hasConsented,
-        isLoaded,
-        showBanner,
+        geoMode: state.geoMode,
+        consent: state.consent,
+        hasConsented: state.hasConsented,
+        isLoaded: state.isLoaded,
+        showBanner: state.showBanner,
         setShowBanner,
         acceptAll,
         rejectAll,

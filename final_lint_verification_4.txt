@@ -1,0 +1,14 @@
+﻿
+> quartermasters-nexus@0.1.0 lint
+> eslint
+
+
+C:\Users\Mujtaba Hasan\Downloads\Kitchen\Quartermasters 3\quartermasters-nexus\src\components\home\FlowConnector.tsx
+  10:33  warning  'direction' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Mujtaba Hasan\Downloads\Kitchen\Quartermasters 3\quartermasters-nexus\src\components\layout\FooterTicker.tsx
+  4:10  warning  'io' is defined but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 2 problems (0 errors, 2 warnings)
+
+
