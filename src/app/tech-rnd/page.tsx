@@ -1,49 +1,41 @@
 import { Metadata } from "next";
-import { Cpu } from "lucide-react";
-import { ServicePageLayout } from "@/components/layout/ServicePageLayout";
-import { GlitchEffect } from "@/components/ui/SectorEffects";
 import { ServiceJsonLd } from "@/components/seo/ServiceJsonLd";
-import { WireframePattern } from "@/components/ui/HexagonalPattern";
+import { TechRndClient } from "@/components/services/TechRndClient";
 
 const capabilities = [
   {
-    title: "Technology Education Consulting",
+    title: "Technology R&D Infrastructure",
     description:
-      "Curriculum design, training infrastructure development, and technology education program strategy for institutions and enterprises.",
+      "Laboratory setup, equipment procurement, technical compliance, and R&D licensing frameworks for government-certified innovation programs.",
+  },
+  {
+    title: "Education Technology Curriculum",
+    description:
+      "Design and deployment of MOE-aligned curricula for STEM, coding, robotics, and digital literacy programs.",
+  },
+  {
+    title: "Technical Operations & Systems",
+    description:
+      "IT infrastructure setup, software procurement, SaaS negotiations, and operational technology integration.",
+  },
+  {
+    title: "Innovation Program Management",
+    description:
+      "Proof-of-concept execution, grant applications, incubation frameworks, and public-private partnership structuring.",
   },
   {
     title: "Digital Transformation Advisory",
     description:
-      "Assessment and roadmap development for organizational digital maturity, legacy system modernization, and cloud migration strategy.",
-  },
-  {
-    title: "Research & Development Strategy",
-    description:
-      "R&D program architecture, innovation pipeline development, and technology scouting for competitive advantage.",
-  },
-  {
-    title: "Data & Analytics Consulting",
-    description:
-      "Data governance frameworks, analytics capability building, and business intelligence infrastructure advisory.",
-  },
-  {
-    title: "Emerging Technology Assessment",
-    description:
-      "Evaluation and integration strategy for AI, blockchain, IoT, and other emerging technologies relevant to your vertical.",
-  },
-  {
-    title: "Technical Architecture Review",
-    description:
-      "System architecture audits, technology stack evaluation, and scalability planning for growing organizations.",
+      "Process automation, cloud migration, digital workflow design, and change management for legacy system modernization.",
   },
 ];
 
 export const metadata: Metadata = {
-  title: "Technology Education & Research Consulting | Quartermasters F.Z.C",
-  description: "Research, Development & Digital Strategy in Technology Education. Bridging the gap between cutting-edge research and implementation.",
+  title: "Technology & R&D Services | Quartermasters F.Z.C",
+  description: "Innovation Infrastructure & Technical Operations. From education technology to R&D frameworks.",
   openGraph: {
-    title: "Technology Education & Research Consulting | Quartermasters F.Z.C",
-    description: "Research, Development & Digital Strategy in Technology Education.",
+    title: "Technology & R&D Services | Quartermasters F.Z.C",
+    description: "Innovation Infrastructure & Technical Operations. From education technology to R&D frameworks.",
     url: 'https://quartermasters.me/tech-rnd',
   }
 };
@@ -52,25 +44,12 @@ export default function TechRndPage() {
   return (
     <>
       <ServiceJsonLd service={{
-        name: "Technology Education and Research Consulting",
-        description: "Research, Development & Digital Strategy in Technology Education.",
+        name: "Technology & R&D Services",
+        description: "Innovation Infrastructure & Technical Operations.",
         url: "https://quartermasters.me/tech-rnd",
         image: "https://quartermasters.me/og-image.jpg"
       }} />
-      <ServicePageLayout
-        overline="Technology Education R&D"
-        title="Consulting & R&D in Technology Education."
-        subtitle="Research, Development & Digital Strategy in Technology Education."
-        description="From technology education frameworks to enterprise digital transformation — we bridge the gap between cutting-edge research and practical business implementation."
-        accent="var(--sector-tech)"
-        glow="rgba(6, 182, 212, 0.15)"
-        icon={Cpu}
-        metaphor="The Laboratory"
-        capabilities={capabilities}
-        CardWrapper={GlitchEffect}
-        backgroundPattern={<WireframePattern />}
-        sectorKey="tech"
-      />
+      <TechRndClient capabilities={capabilities} />
     </>
   );
 }

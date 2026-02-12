@@ -1,49 +1,41 @@
 import { Metadata } from "next";
-import { Shield } from "lucide-react";
-import { ServicePageLayout } from "@/components/layout/ServicePageLayout";
-import { VaultEffect } from "@/components/ui/SectorEffects";
 import { ServiceJsonLd } from "@/components/seo/ServiceJsonLd";
-import { HexagonalPattern } from "@/components/ui/HexagonalPattern";
+import { FinancialClient } from "@/components/services/FinancialClient";
 
 const capabilities = [
   {
     title: "Banking Services Consultancy",
     description:
-      "Strategic advisory on banking operations, regulatory compliance, and financial framework development for institutional and corporate clients.",
+      "Advisory on UAE banking ecosystem positioning, account structuring, relationship management, and trade finance frameworks.",
   },
   {
-    title: "Capital Strategy",
+    title: "Investment Structure Design",
     description:
-      "Comprehensive capital structuring, investment advisory, and financial planning aligned with UAE regulatory standards.",
+      "Architecture for holding companies, SPVs, and FDI vehicles aligned with DIFC, ADGM, and mainland regulations.",
   },
   {
-    title: "Compliance & Audit Frameworks",
+    title: "Regulatory Compliance & Licensing",
     description:
-      "Design and implementation of compliance management systems, internal audit protocols, and regulatory reporting structures.",
+      "End-to-end licensing support for financial services, including SCA (Securities & Commodities Authority) and Central Bank filings.",
   },
   {
-    title: "Risk Assessment",
+    title: "Treasury & Cash Management",
     description:
-      "Quantitative and qualitative risk modeling, exposure analysis, and mitigation strategy development.",
+      "Design and execution of institutional treasury operations, FX hedging strategies, and multi-currency frameworks.",
   },
   {
-    title: "Financial Operations Design",
+    title: "Capital Raise & Fundraising Advisory",
     description:
-      "Process architecture for treasury management, payment operations, and financial workflow optimization.",
-  },
-  {
-    title: "Regulatory Navigation",
-    description:
-      "Expert guidance through UAE Central Bank regulations, AFZA requirements, and cross-jurisdictional financial compliance.",
+      "Positioning for private equity, venture capital, and institutional funding rounds — from pitch to term sheet.",
   },
 ];
 
 export const metadata: Metadata = {
-  title: "Banking Services Consultancy | Quartermasters F.Z.C",
-  description: "Strategic advisory on banking operations, regulatory compliance, and financial framework development for institutional and corporate clients.",
+  title: "Financial Advisory & Banking Services | Quartermasters F.Z.C",
+  description: "Institutional Financial Architecture & Regulatory Positioning. From banking structures to regulatory compliance.",
   openGraph: {
-    title: "Banking Services Consultancy | Quartermasters F.Z.C",
-    description: "Strategic advisory on banking operations, regulatory compliance, and financial framework development.",
+    title: "Financial Advisory & Banking Services | Quartermasters F.Z.C",
+    description: "Institutional Financial Architecture & Regulatory Positioning. From banking structures to regulatory compliance.",
     url: 'https://quartermasters.me/financial-advisory',
   }
 };
@@ -52,26 +44,12 @@ export default function FinancialAdvisoryPage() {
   return (
     <>
       <ServiceJsonLd service={{
-        name: "Banking Services Consultancy",
-        description: "Strategic advisory on banking operations, regulatory compliance, and financial framework development for institutional and corporate clients.",
+        name: "Financial Advisory & Banking Services",
+        description: "Institutional Financial Architecture & Regulatory Positioning.",
         url: "https://quartermasters.me/financial-advisory",
         image: "https://quartermasters.me/og-image.jpg"
       }} />
-      <ServicePageLayout
-        overline="Banking Services Consultancy"
-        title="Banking Services Consultancy."
-        subtitle="Strategic Advisory on Banking Operations & Capital Management."
-        description="Delivering institutional-grade financial advisory under regulated authority. From compliance frameworks to capital structuring, we architect financial stability with the precision and security your organization demands."
-        accent="var(--sector-financial)"
-        glow="rgba(212, 160, 23, 0.15)"
-        icon={Shield}
-        metaphor="The Vault"
-        capabilities={capabilities}
-        disclaimer="Subject to UAE Government Authority Approvals. Banking consultancy services provided under AFZA License 37357."
-        CardWrapper={VaultEffect}
-        backgroundPattern={<HexagonalPattern />}
-        sectorKey="financial"
-      />
+      <FinancialClient capabilities={capabilities} />
     </>
   );
 }

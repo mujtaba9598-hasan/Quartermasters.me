@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { motion } from "framer-motion";
 import { type LucideIcon } from "lucide-react";
@@ -9,6 +11,7 @@ import {
   staggerItem,
   scrollViewport,
 } from "@/lib/animations";
+import { useSector } from "@/lib/SectorContext";
 import type { SectorKey } from "@/lib/design-tokens";
 
 interface ServiceCapability {
@@ -50,8 +53,14 @@ export function ServicePageLayout({
   backgroundPattern,
   sectorKey,
 }: ServicePageProps) {
-  // Note: Sector context removed as this is now a server component
-  // Sector theming still works via CSS variables based on route
+  const { setActiveSector } = useSector();
+
+  // Set active sector on mount, clear on unmount
+  React.useEffect(() => {
+    if (sectorKey) setActiveSector(sectorKey);
+    return () => setActiveSector(null);
+  }, [sectorKey, setActiveSector]);
+
   const Wrapper = CardWrapper ?? (({ children }: { children: React.ReactNode }) => (
     <motion.div
       className="glass glass-hover rounded-xl p-6 transition-all"

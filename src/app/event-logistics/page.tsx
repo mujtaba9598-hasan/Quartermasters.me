@@ -1,9 +1,6 @@
 import { Metadata } from "next";
-import { MapPin } from "lucide-react";
-import { ServicePageLayout } from "@/components/layout/ServicePageLayout";
-import { RippleEffect } from "@/components/ui/SectorEffects";
 import { ServiceJsonLd } from "@/components/seo/ServiceJsonLd";
-import { RadarPattern } from "@/components/ui/HexagonalPattern";
+import { EventLogisticsClient } from "@/components/services/EventLogisticsClient";
 
 const capabilities = [
   {
@@ -29,7 +26,7 @@ const capabilities = [
   {
     title: "Stakeholder & Protocol Management",
     description:
-      "VIP handling, government protocol compliance, guest management systems, and diplomatic coordination.",
+      "VIP coordination, government liaison, protocol adherence, and stakeholder communications for institutional events.",
   },
   {
     title: "Post-Event Analytics",
@@ -57,20 +54,7 @@ export default function EventLogisticsPage() {
         url: "https://quartermasters.me/event-logistics",
         image: "https://quartermasters.me/og-image.jpg"
       }} />
-      <ServicePageLayout
-        overline="Organization & Event Management"
-        title="Organization and Event Management."
-        subtitle="High-Stakes Logistics, Coordination & Operational Deployment."
-        description="When precision and timing define success, our operational framework ensures every element — from venue logistics to stakeholder management — is executed with military-grade coordination."
-        accent="var(--sector-events-lime)"
-        glow="rgba(132, 204, 22, 0.15)"
-        icon={MapPin}
-        metaphor="The Radar"
-        capabilities={capabilities}
-        CardWrapper={RippleEffect}
-        backgroundPattern={<RadarPattern />}
-        sectorKey="events"
-      />
+      <EventLogisticsClient capabilities={capabilities} />
     </>
   );
 }

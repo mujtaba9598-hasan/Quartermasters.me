@@ -1,49 +1,41 @@
 import { Metadata } from "next";
-import { Compass } from "lucide-react";
-import { ServicePageLayout } from "@/components/layout/ServicePageLayout";
-import { PanoramicEffect } from "@/components/ui/SectorEffects";
 import { ServiceJsonLd } from "@/components/seo/ServiceJsonLd";
-import { GridPattern } from "@/components/ui/HexagonalPattern";
+import { ManagementClient } from "@/components/services/ManagementClient";
 
 const capabilities = [
   {
-    title: "Management Consultancies",
+    title: "Strategic Business Planning",
     description:
-      "Strategic management advisory covering organizational design, governance frameworks, and executive decision-making support.",
-  },
-  {
-    title: "Business Strategy",
-    description:
-      "Market analysis, competitive positioning, and long-term strategic planning for sustainable organizational growth.",
+      "Market entry strategies, competitive positioning, growth roadmaps, and scenario planning for complex operating environments.",
   },
   {
     title: "Operational Excellence",
     description:
-      "Process optimization, performance management systems, and operational efficiency audits across business functions.",
+      "Process optimization, resource allocation frameworks, SOP development, and scalability architecture.",
   },
   {
-    title: "Governance & Compliance",
+    title: "Corporate Structure & Governance",
     description:
-      "Board advisory, corporate governance frameworks, and regulatory compliance strategy for UAE-based entities.",
+      "Holding company design, board governance frameworks, shareholder agreements, and decision-making protocols.",
   },
   {
     title: "Change Management",
     description:
-      "Organizational transformation programs, stakeholder alignment, and structured change implementation methodologies.",
+      "Organizational transformation programs, restructuring execution, culture alignment, and stakeholder communication.",
   },
   {
-    title: "Performance Advisory",
+    title: "Risk Management & Mitigation",
     description:
-      "KPI framework design, executive dashboards, and data-driven performance monitoring for leadership teams.",
+      "Enterprise risk frameworks, regulatory risk assessment, operational continuity planning, and crisis management protocols.",
   },
 ];
 
 export const metadata: Metadata = {
-  title: "Management Consultancies | Quartermasters F.Z.C",
-  description: "Strategic management advisory covering organizational design, governance frameworks, and executive decision-making support.",
+  title: "Strategic Management Consultancy | Quartermasters F.Z.C",
+  description: "Strategic Operations & Organizational Infrastructure for complex regulatory landscapes.",
   openGraph: {
-    title: "Management Consultancies | Quartermasters F.Z.C",
-    description: "Strategic management advisory covering organizational design, governance frameworks, and executive decision-making support.",
+    title: "Strategic Management Consultancy | Quartermasters F.Z.C",
+    description: "Strategic Operations & Organizational Infrastructure for complex regulatory landscapes.",
     url: 'https://quartermasters.me/management',
   }
 };
@@ -52,26 +44,12 @@ export default function ManagementPage() {
   return (
     <>
       <ServiceJsonLd service={{
-        name: "Management Consultancies",
-        description: "Strategic management advisory covering organizational design, governance frameworks, and executive decision-making support.",
+        name: "Strategic Management Consultancy",
+        description: "Strategic Operations & Organizational Infrastructure.",
         url: "https://quartermasters.me/management",
         image: "https://quartermasters.me/og-image.jpg"
       }} />
-      <ServicePageLayout
-        overline="Management Consultancies"
-        title="Management Consultancies."
-        subtitle="Strategic Advisory for Organizational Leadership & Governance."
-        description="Providing institutional-grade management consulting under regulated authority. From governance frameworks to operational transformation, we deliver the strategic clarity your organization needs to operate at scale."
-        accent="var(--sector-management)"
-        glow="rgba(226, 232, 240, 0.15)"
-        icon={Compass}
-        metaphor="The Bridge"
-        capabilities={capabilities}
-        disclaimer="Subject to UAE Government Authority Approvals. Management consultancy services provided under AFZA License 37357."
-        CardWrapper={PanoramicEffect}
-        backgroundPattern={<GridPattern />}
-        sectorKey="management"
-      />
+      <ManagementClient capabilities={capabilities} />
     </>
   );
 }
