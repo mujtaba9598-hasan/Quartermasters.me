@@ -1,14 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-
-// Region Config for Geo-Detection
-const REGIONS: Record<string, string[]> = {
-    GDPR: [
-        'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'GB', 'IS', 'LI', 'NO', 'CH'
-    ],
-    CCPA: ['US', 'CA'],
-    PDPL: ['AE'],
-}
+import { REGIONS } from '@/lib/consent-constants'
 
 export function middleware(request: NextRequest) {
     // Get Country from Cloudflare Header
