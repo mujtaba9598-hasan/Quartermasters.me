@@ -1,0 +1,29 @@
+services:
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: quartermasters-app
+    restart: unless-stopped
+    env_file:
+      - .env.local
+    ports:
+      - "3001:3000"
+    networks:
+      - qm-network
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: quartermasters-tunnel
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=eyJhIjoiNGI1MDJiNzY3ZDU5ZGJlOWQ3ZmVhMjdhYmYzYmI3YjciLCJ0IjoiMjFmN2ZjMzktOGJmZC00MWU1LWIxOWQtOWMwMzQyYzIxZjNmIiwicyI6IkxOY2ZNdG9ZQUtGZUl0S0l2OTh3RGVtT1EzQVJqZU9nZlR0eEVqMDdnTHM9In0=
+    depends_on:
+      - nextjs
+    networks:
+      - qm-network
+
+networks:
+  qm-network:
+    driver: bridge

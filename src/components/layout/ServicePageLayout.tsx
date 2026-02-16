@@ -1,0 +1,244 @@
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import { type LucideIcon } from "lucide-react";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import {
+  fadeInUp,
+  staggerContainer,
+  staggerItem,
+  scrollViewport,
+} from "@/lib/animations";
+import { useSector } from "@/lib/SectorContext";
+import type { SectorKey } from "@/lib/design-tokens";
+
+interface ServiceCapability {
+  title: string;
+  description: string;
+}
+
+interface ServicePageProps {
+  overline: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  accent: string;
+  glow: string;
+  icon: LucideIcon;
+  metaphor: string;
+  capabilities: ServiceCapability[];
+  disclaimer?: string;
+  /** Wrap each capability card with a sector-specific effect component */
+  CardWrapper?: React.ComponentType<{ children: React.ReactNode }>;
+  /** Optional background pattern element rendered behind hero */
+  backgroundPattern?: React.ReactNode;
+  /** Sector key for dynamic theming */
+  sectorKey?: SectorKey;
+}
+
+export function ServicePageLayout({
+  overline,
+  title,
+  subtitle,
+  description,
+  accent,
+  glow,
+  icon: Icon,
+  metaphor,
+  capabilities,
+  disclaimer,
+  CardWrapper,
+  backgroundPattern,
+  sectorKey,
+}: ServicePageProps) {
+  const { setActiveSector } = useSector();
+
+  // Set active sector on mount, clear on unmount
+  React.useEffect(() => {
+    if (sectorKey) setActiveSector(sectorKey);
+    return () => setActiveSector(null);
+  }, [sectorKey, setActiveSector]);
+
+  const Wrapper = CardWrapper ?? (({ children }: { children: React.ReactNode }) => (
+    <motion.div
+      className="glass glass-hover rounded-xl p-6 transition-all"
+      style={{ borderColor: "transparent", borderWidth: 1, borderStyle: "solid" }}
+      whileHover={{ y: -4, boxShadow: `0 16px 40px ${glow}` }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = accent; }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "transparent"; }}
+    >
+      {children}
+    </motion.div>
+  ));
+
+  return (
+    <>
+      <Header />
+      <main className="pt-24">
+        {/* Hero */}
+        <section className="relative py-24">
+          {backgroundPattern && (
+            <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.04]">
+              {backgroundPattern}
+            </div>
+          )}
+          <div className="mx-auto max-w-7xl px-6">
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+              className="max-w-3xl"
+            >
+              <motion.div
+                variants={staggerItem}
+                className="mb-6 flex items-center gap-4"
+              >
+                <div
+                  className="flex h-14 w-14 items-center justify-center rounded-xl"
+                  style={{ background: glow, color: accent }}
+                >
+                  <Icon size={28} />
+                </div>
+                <span
+                  className="text-xs font-medium uppercase tracking-widest"
+                  style={{ fontFamily: "var(--font-heading)", color: accent, opacity: 0.7 }}
+                >
+                  {metaphor}
+                </span>
+              </motion.div>
+
+              <motion.p variants={staggerItem} className="text-overline mb-4" style={{ color: accent }}>
+                {overline}
+              </motion.p>
+
+              <motion.h1 variants={staggerItem} className="heading-1 mb-4">
+                {title}
+              </motion.h1>
+
+              <motion.p
+                variants={staggerItem}
+                className="heading-4 mb-6"
+                style={{ color: "var(--color-text-muted)" }}
+              >
+                {subtitle}
+              </motion.p>
+
+              <motion.p
+                variants={staggerItem}
+                className="max-w-2xl text-base leading-relaxed"
+                style={{ color: "var(--color-text-muted)" }}
+              >
+                {description}
+              </motion.p>
+
+              {disclaimer && (
+                <motion.p
+                  variants={staggerItem}
+                  className="mt-6 text-xs"
+                  style={{ color: "var(--color-text-dim)", opacity: 0.7 }}
+                >
+                  {disclaimer}
+                </motion.p>
+              )}
+
+              <motion.div variants={staggerItem} className="mt-10">
+                <a
+                  href="/contact"
+                  className="btn-glow-line inline-block rounded-lg px-8 py-3.5 text-sm font-semibold"
+                  style={{
+                    fontFamily: "var(--font-heading)",
+                    background: accent,
+                    color: "var(--color-primary-bg)",
+                  }}
+                >
+                  Request Consultation
+                </a>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Capabilities */}
+        <section className="py-24">
+          <div className="mx-auto max-w-7xl px-6">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={scrollViewport}
+              variants={staggerContainer}
+            >
+              <motion.p variants={staggerItem} className="text-overline mb-4" style={{ color: accent }}>
+                Capabilities
+              </motion.p>
+              <motion.h2 variants={staggerItem} className="heading-2 mb-12">
+                What We Deliver.
+              </motion.h2>
+
+              <motion.div
+                variants={staggerContainer}
+                className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
+              >
+                {capabilities.map((cap, i) => (
+                  <motion.div key={i} variants={staggerItem}>
+                    <Wrapper>
+                      <div
+                        className="mb-4 flex h-8 w-8 items-center justify-center rounded-md text-sm font-bold"
+                        style={{
+                          fontFamily: "var(--font-heading)",
+                          background: glow,
+                          color: accent,
+                        }}
+                      >
+                        {String(i + 1).padStart(2, "0")}
+                      </div>
+                      <h3 className="heading-4 mb-2">{cap.title}</h3>
+                      <p
+                        className="text-sm leading-relaxed"
+                        style={{ color: "var(--color-text-muted)" }}
+                      >
+                        {cap.description}
+                      </p>
+                    </Wrapper>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* CTA Band */}
+        <section className="py-24">
+          <div className="mx-auto max-w-7xl px-6">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={scrollViewport}
+              variants={fadeInUp}
+              className="glass rounded-2xl p-12 text-center"
+              style={{ borderColor: accent, borderWidth: 1, borderStyle: "solid" }}
+            >
+              <h2 className="heading-3 mb-4">Ready to Begin?</h2>
+              <p className="mb-8 text-sm" style={{ color: "var(--color-text-muted)" }}>
+                Schedule a confidential consultation to discuss your requirements.
+              </p>
+              <a
+                href="/contact"
+                className="btn-glow-line inline-block rounded-lg px-10 py-4 text-sm font-semibold"
+                style={{
+                  fontFamily: "var(--font-heading)",
+                  background: accent,
+                  color: "var(--color-primary-bg)",
+                }}
+              >
+                Request Consultation
+              </a>
+            </motion.div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
+}
