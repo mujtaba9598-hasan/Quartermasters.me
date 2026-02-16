@@ -1,0 +1,169 @@
+'use client';
+
+/**
+ * Hexagonal SVG pattern for Financial Advisory (The Vault) theme.
+ * Rigid geometric structure representing security and structure.
+ */
+export function HexagonalPattern() {
+    return (
+        <svg
+            width="100%"
+            height="100%"
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute inset-0"
+        >
+            <defs>
+                <pattern
+                    id="hexagons"
+                    x="0"
+                    y="0"
+                    width="100"
+                    height="86.6"
+                    patternUnits="userSpaceOnUse"
+                >
+                    {/* Hexagon path */}
+                    <path
+                        d="M25 0 L75 0 L100 43.3 L75 86.6 L25 86.6 L0 43.3 Z"
+                        fill="none"
+                        stroke="var(--sector-financial)"
+                        strokeWidth="0.5"
+                        opacity="0.15"
+                    />
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#hexagons)" />
+        </svg>
+    );
+}
+
+/**
+ * Organic squircle/network pattern for Human Capital (The Network) theme.
+ * Soft, breathing forms representing human connections.
+ */
+export function NetworkPattern() {
+    return (
+        <svg
+            width="100%"
+            height="100%"
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute inset-0"
+        >
+            <defs>
+                <pattern
+                    id="network"
+                    x="0"
+                    y="0"
+                    width="120"
+                    height="120"
+                    patternUnits="userSpaceOnUse"
+                >
+                    {/* Interconnected nodes */}
+                    <circle cx="60" cy="60" r="3" fill="var(--sector-hr-teal)" opacity="0.2" />
+                    <circle cx="0" cy="0" r="2" fill="var(--sector-hr-teal)" opacity="0.15" />
+                    <circle cx="120" cy="0" r="2" fill="var(--sector-hr-teal)" opacity="0.15" />
+                    <circle cx="0" cy="120" r="2" fill="var(--sector-hr-teal)" opacity="0.15" />
+                    <circle cx="120" cy="120" r="2" fill="var(--sector-hr-teal)" opacity="0.15" />
+                    <line x1="60" y1="60" x2="0" y2="0" stroke="var(--sector-hr-teal)" strokeWidth="0.5" opacity="0.1" />
+                    <line x1="60" y1="60" x2="120" y2="0" stroke="var(--sector-hr-teal)" strokeWidth="0.5" opacity="0.1" />
+                    <line x1="60" y1="60" x2="0" y2="120" stroke="var(--sector-hr-teal)" strokeWidth="0.5" opacity="0.1" />
+                    <line x1="60" y1="60" x2="120" y2="120" stroke="var(--sector-hr-teal)" strokeWidth="0.5" opacity="0.1" />
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#network)" />
+        </svg>
+    );
+}
+
+/**
+ * Wireframe/glitch pattern for Tech R&D (The Lab) theme.
+ * Digital grid representing computational precision.
+ */
+export function WireframePattern() {
+    return (
+        <svg
+            width="100%"
+            height="100%"
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute inset-0"
+        >
+            <defs>
+                <pattern
+                    id="wireframe"
+                    x="0"
+                    y="0"
+                    width="40"
+                    height="40"
+                    patternUnits="userSpaceOnUse"
+                >
+                    <rect width="40" height="40" fill="none" stroke="var(--sector-tech)" strokeWidth="0.5" opacity="0.12" />
+                    <line x1="0" y1="20" x2="40" y2="20" stroke="var(--sector-tech)" strokeWidth="0.3" opacity="0.08" />
+                    <line x1="20" y1="0" x2="20" y2="40" stroke="var(--sector-tech)" strokeWidth="0.3" opacity="0.08" />
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#wireframe)" />
+        </svg>
+    );
+}
+
+/**
+ * Radar/sonar pattern for Event Logistics (The Radar) theme.
+ * Concentric circles representing operational awareness.
+ */
+export function RadarPattern() {
+    return (
+        <svg
+            width="100%"
+            height="100%"
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute inset-0"
+        >
+            <defs>
+                <pattern
+                    id="radar"
+                    x="0"
+                    y="0"
+                    width="200"
+                    height="200"
+                    patternUnits="userSpaceOnUse"
+                >
+                    <circle cx="100" cy="100" r="30" fill="none" stroke="var(--sector-events-lime)" strokeWidth="0.5" opacity="0.15" />
+                    <circle cx="100" cy="100" r="60" fill="none" stroke="var(--sector-events-lime)" strokeWidth="0.5" opacity="0.1" />
+                    <circle cx="100" cy="100" r="90" fill="none" stroke="var(--sector-events-lime)" strokeWidth="0.5" opacity="0.08" />
+                    <line x1="100" y1="0" x2="100" y2="200" stroke="var(--sector-events-lime)" strokeWidth="0.3" opacity="0.08" />
+                    <line x1="0" y1="100" x2="200" y2="100" stroke="var(--sector-events-lime)" strokeWidth="0.3" opacity="0.08" />
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#radar)" />
+        </svg>
+    );
+}
+
+/**
+ * Interlocking grid pattern for Management (The Bridge) theme.
+ * Interconnected rectangles representing governance frameworks.
+ */
+export function GridPattern() {
+    return (
+        <svg
+            width="100%"
+            height="100%"
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute inset-0"
+        >
+            <defs>
+                <pattern
+                    id="grid"
+                    x="0"
+                    y="0"
+                    width="60"
+                    height="60"
+                    patternUnits="userSpaceOnUse"
+                >
+                    <rect x="5" y="5" width="50" height="50" fill="none" stroke="var(--sector-mgmt)" strokeWidth="0.5" opacity="0.12" />
+                    <rect x="15" y="15" width="30" height="30" fill="none" stroke="var(--sector-mgmt)" strokeWidth="0.5" opacity="0.08" />
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+    );
+}
