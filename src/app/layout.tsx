@@ -61,7 +61,7 @@ export const metadata: Metadata = {
         url: 'https://quartermasters.me/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Quartermasters F.Z.C Sovereign Nexus',
+        alt: 'Quartermasters F.Z.C',
       },
     ],
     locale: "en_AE",

@@ -253,13 +253,16 @@ export async function POST(request: NextRequest) {
 
     const resend = new Resend(apiKey);
 
-    const toEmail = process.env.CONTACT_EMAIL ?? "hello@quartermasters.me";
+    const toEmails = (process.env.CONTACT_EMAIL ?? "hello@quartermasters.me,mujtaba@quartermasters.me")
+      .split(",")
+      .map((e) => e.trim())
+      .filter(Boolean);
     const fromEmail = process.env.CONTACT_FROM_EMAIL ?? "contact@quartermasters.me";
     const serviceLabel = SERVICE_LABELS[payload.service] ?? payload.service;
 
     const { error: sendError } = await resend.emails.send({
       from: `Quartermasters Contact <${fromEmail}>`,
-      to: [toEmail],
+      to: toEmails,
       replyTo: payload.email,
       subject: `New Inquiry: ${serviceLabel} — ${payload.name}`,
       html: buildEmailHtml(payload),

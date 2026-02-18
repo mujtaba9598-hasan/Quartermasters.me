@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     "Strategic Capital Orchestration",
     "Talent Deployment UAE",
     "Logistics Management Ajman",
-    "Sovereign Nexus",
+    "Quartermasters F.Z.C",
   ],
   authors: [{ name: "Quartermasters F.Z.C" }],
   openGraph: {
