@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 // ---------------------------------------------------------------------------
 // Rate-limit store  (in-memory; resets on cold-start — fine for edge/serverless
@@ -57,10 +57,10 @@ interface ContactPayload {
   name: string;
   email: string;
   organization: string;
-  whatsapp?: string; // Optional WhatsApp number
+  whatsapp?: string;
   service: string;
   message: string;
-  _honeypot?: string; // anti-spam honeypot — should always be empty
+  _honeypot?: string;
 }
 
 function validate(data: unknown): { ok: true; payload: ContactPayload } | { ok: false; error: string } {
@@ -72,7 +72,6 @@ function validate(data: unknown): { ok: true; payload: ContactPayload } | { ok: 
 
   // Honeypot check — if filled, silently "succeed" to fool bots
   if (typeof d._honeypot === "string" && d._honeypot.length > 0) {
-    // Return ok so the caller returns a fake-success 200
     return { ok: true, payload: d as unknown as ContactPayload };
   }
 
@@ -97,11 +96,6 @@ function validate(data: unknown): { ok: true; payload: ContactPayload } | { ok: 
   if (!EMAIL_RE.test((d.email as string).trim())) {
     return { ok: false, error: "Please provide a valid email address." };
   }
-
-  // Service must be from the known list
-  // For the "Ask Quartermaster" feature, we might send "General" or a specific "Inquery" service type. 
-  // Ensure "General" or "Ask Quartermaster" is in VALID_SERVICES if not already. 
-  // Checking VALID_SERVICES... it has "general". We can use that.
 
   if (!VALID_SERVICES.includes((d.service as string).trim())) {
     return { ok: false, error: "Invalid service selection." };
@@ -204,6 +198,21 @@ function buildEmailHtml(p: ContactPayload): string {
 }
 
 // ---------------------------------------------------------------------------
+// SMTP transporter (Hostinger)
+// ---------------------------------------------------------------------------
+function createTransporter() {
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST ?? "smtp.hostinger.com",
+    port: Number(process.env.SMTP_PORT ?? 465),
+    secure: true, // SSL
+    auth: {
+      user: process.env.SMTP_USER ?? "",
+      pass: process.env.SMTP_PASS ?? "",
+    },
+  });
+}
+
+// ---------------------------------------------------------------------------
 // POST handler
 // ---------------------------------------------------------------------------
 export async function POST(request: NextRequest) {
@@ -241,47 +250,41 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true });
     }
 
-    // --- Send email via Resend ---
-    const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
-      console.error("[contact] RESEND_API_KEY is not configured.");
+    // --- Check SMTP credentials ---
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
+    if (!smtpUser || !smtpPass) {
+      console.error("[contact] SMTP credentials not configured.");
       return NextResponse.json(
         { error: "Email service is not configured. Please contact us directly at hello@quartermasters.me." },
         { status: 503 },
       );
     }
 
-    const resend = new Resend(apiKey);
+    // --- Send email via Hostinger SMTP ---
+    const transporter = createTransporter();
 
     const toEmails = (process.env.CONTACT_EMAIL ?? "hello@quartermasters.me,mujtaba@quartermasters.me")
       .split(",")
       .map((e) => e.trim())
       .filter(Boolean);
-    const fromEmail = process.env.CONTACT_FROM_EMAIL ?? "contact@quartermasters.me";
+    const fromEmail = process.env.SMTP_USER;
     const serviceLabel = SERVICE_LABELS[payload.service] ?? payload.service;
 
-    const { error: sendError } = await resend.emails.send({
+    await transporter.sendMail({
       from: `Quartermasters Contact <${fromEmail}>`,
-      to: toEmails,
+      to: toEmails.join(", "),
       replyTo: payload.email,
       subject: `New Inquiry: ${serviceLabel} — ${payload.name}`,
       html: buildEmailHtml(payload),
     });
 
-    if (sendError) {
-      console.error("[contact] Resend error:", sendError);
-      return NextResponse.json(
-        { error: "Failed to send your message. Please try again or contact us directly." },
-        { status: 502 },
-      );
-    }
-
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("[contact] Unexpected error:", err);
+    console.error("[contact] Email send error:", err);
     return NextResponse.json(
-      { error: "An unexpected error occurred. Please try again later." },
-      { status: 500 },
+      { error: "Failed to send your message. Please try again or contact us directly at hello@quartermasters.me." },
+      { status: 502 },
     );
   }
 }
