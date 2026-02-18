@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 // ---------------------------------------------------------------------------
 // Rate-limit store  (in-memory; resets on cold-start — fine for edge/serverless
@@ -198,21 +198,6 @@ function buildEmailHtml(p: ContactPayload): string {
 }
 
 // ---------------------------------------------------------------------------
-// SMTP transporter (Hostinger)
-// ---------------------------------------------------------------------------
-function createTransporter() {
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST ?? "smtp.hostinger.com",
-    port: Number(process.env.SMTP_PORT ?? 465),
-    secure: true, // SSL
-    auth: {
-      user: process.env.SMTP_USER ?? "",
-      pass: process.env.SMTP_PASS ?? "",
-    },
-  });
-}
-
-// ---------------------------------------------------------------------------
 // POST handler
 // ---------------------------------------------------------------------------
 export async function POST(request: NextRequest) {
@@ -250,41 +235,47 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true });
     }
 
-    // --- Check SMTP credentials ---
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS;
-    if (!smtpUser || !smtpPass) {
-      console.error("[contact] SMTP credentials not configured.");
+    // --- Send email via Resend ---
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      console.error("[contact] RESEND_API_KEY is not configured.");
       return NextResponse.json(
         { error: "Email service is not configured. Please contact us directly at hello@quartermasters.me." },
         { status: 503 },
       );
     }
 
-    // --- Send email via Hostinger SMTP ---
-    const transporter = createTransporter();
+    const resend = new Resend(apiKey);
 
     const toEmails = (process.env.CONTACT_EMAIL ?? "hello@quartermasters.me,mujtaba@quartermasters.me")
       .split(",")
       .map((e) => e.trim())
       .filter(Boolean);
-    const fromEmail = process.env.SMTP_USER;
+    const fromEmail = process.env.CONTACT_FROM_EMAIL ?? "onboarding@resend.dev";
     const serviceLabel = SERVICE_LABELS[payload.service] ?? payload.service;
 
-    await transporter.sendMail({
+    const { error: sendError } = await resend.emails.send({
       from: `Quartermasters Contact <${fromEmail}>`,
-      to: toEmails.join(", "),
+      to: toEmails,
       replyTo: payload.email,
       subject: `New Inquiry: ${serviceLabel} — ${payload.name}`,
       html: buildEmailHtml(payload),
     });
 
+    if (sendError) {
+      console.error("[contact] Resend error:", sendError);
+      return NextResponse.json(
+        { error: "Failed to send your message. Please try again or contact us directly." },
+        { status: 502 },
+      );
+    }
+
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("[contact] Email send error:", err);
+    console.error("[contact] Unexpected error:", err);
     return NextResponse.json(
-      { error: "Failed to send your message. Please try again or contact us directly at hello@quartermasters.me." },
-      { status: 502 },
+      { error: "An unexpected error occurred. Please try again later." },
+      { status: 500 },
     );
   }
 }
