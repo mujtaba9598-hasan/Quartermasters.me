@@ -53,7 +53,7 @@ export function SearchBar() {
           email: formData.email,
           whatsapp: formData.whatsapp,
           message: formData.message,
-          service: "General Inquiry", // Default service or categorize based on AI later
+          service: "general",
         }),
       });
 

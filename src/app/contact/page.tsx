@@ -469,12 +469,13 @@ export default function ContactPage() {
                       Email
                     </p>
                   </div>
-                  <p
-                    className="text-sm"
-                    style={{ color: "var(--color-text-muted)" }}
+                  <a
+                    href="mailto:hello@quartermasters.me"
+                    className="text-sm transition-colors hover:underline"
+                    style={{ color: "var(--color-accent-gold)" }}
                   >
                     hello@quartermasters.me
-                  </p>
+                  </a>
                 </div>
               </motion.div>
             </motion.div>

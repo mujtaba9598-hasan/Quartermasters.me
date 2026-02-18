@@ -1,5 +1,5 @@
 /**
- * Quartermasters "Sovereign Nexus" — Design Token Constants
+ * Quartermasters — Design Token Constants
  * Mirrors CSS variables for use in JS/TS (Framer Motion, dynamic styling).
  */
 

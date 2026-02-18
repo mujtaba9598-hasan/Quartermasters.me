@@ -401,8 +401,7 @@ const sections: Section[] = [
         <p>
           All content on the Website — including but not limited to text,
           graphics, logos, icons, images, audio clips, digital downloads, data
-          compilations, software, design elements, the &ldquo;Sovereign
-          Nexus&rdquo; design system, the Quartermasters brand identity, and
+          compilations, software, design elements, the Quartermasters brand identity, and
           all associated trade marks — is the exclusive property of
           Quartermasters F.Z.C or its licensors and is protected by UAE
           intellectual property laws and applicable international treaties.
