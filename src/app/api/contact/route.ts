@@ -251,11 +251,11 @@ export async function POST(request: NextRequest) {
       .split(",")
       .map((e) => e.trim())
       .filter(Boolean);
-    const fromEmail = process.env.CONTACT_FROM_EMAIL ?? "onboarding@resend.dev";
+    const fromEmail = process.env.CONTACT_FROM_EMAIL ?? "contact@quartermasters.me";
     const serviceLabel = SERVICE_LABELS[payload.service] ?? payload.service;
 
-    const { error: sendError } = await resend.emails.send({
-      from: fromEmail,
+    const { data, error: sendError } = await resend.emails.send({
+      from: `Quartermasters <${fromEmail}>`,
       to: toEmails,
       replyTo: payload.email,
       subject: `New Inquiry: ${serviceLabel} — ${payload.name}`,
@@ -263,18 +263,20 @@ export async function POST(request: NextRequest) {
     });
 
     if (sendError) {
-      console.error("[contact] Resend error:", sendError);
+      console.error("[contact] Resend error:", JSON.stringify(sendError));
       return NextResponse.json(
-        { error: `Resend error: ${sendError.message ?? JSON.stringify(sendError)}` },
+        { error: `Send failed: ${sendError.message ?? JSON.stringify(sendError)}` },
         { status: 502 },
       );
     }
 
+    console.log("[contact] Email sent successfully, id:", data?.id);
     return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error("[contact] Unexpected error:", err);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[contact] Unexpected error:", message);
     return NextResponse.json(
-      { error: "An unexpected error occurred. Please try again later." },
+      { error: `Unexpected error: ${message}` },
       { status: 500 },
     );
   }
