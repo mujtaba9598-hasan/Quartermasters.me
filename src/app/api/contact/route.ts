@@ -255,7 +255,7 @@ export async function POST(request: NextRequest) {
     const serviceLabel = SERVICE_LABELS[payload.service] ?? payload.service;
 
     const { error: sendError } = await resend.emails.send({
-      from: `Quartermasters Contact <${fromEmail}>`,
+      from: fromEmail,
       to: toEmails,
       replyTo: payload.email,
       subject: `New Inquiry: ${serviceLabel} — ${payload.name}`,
