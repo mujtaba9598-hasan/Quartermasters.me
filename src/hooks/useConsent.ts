@@ -52,10 +52,8 @@ export function useConsent() {
                 // fall through
             }
         } else {
-            // Region-based defaults
-            if (mode !== 'gdpr') {
-                initialConsent = { ...DEFAULT_CONSENT, analytics: true }
-            }
+            // Default to GDPR-strict for all visitors (all tracking off until accepted)
+            initialConsent = { ...DEFAULT_CONSENT }
         }
 
         Promise.resolve().then(() => {
