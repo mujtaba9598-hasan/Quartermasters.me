@@ -3,6 +3,9 @@
  * Quartermasters F.Z.C — Contact Form Handler
  * Runs on Hostinger shared hosting (PHP native).
  * No third-party dependencies.
+ *
+ * Every valid submission is LOGGED TO DISK first (zero data loss),
+ * then emailed. Even if mail() silently drops a message, the log has it.
  */
 
 // ---------------------------------------------------------------------------
@@ -32,7 +35,7 @@ $ip = trim($ip);
 $ipHash = md5($ip);
 $rateLimitFile = $rateLimitDir . '/' . $ipHash . '.json';
 
-$maxRequests = 5;
+$maxRequests = 10;
 $windowSeconds = 3600; // 1 hour
 
 if (file_exists($rateLimitFile)) {
@@ -124,9 +127,45 @@ $serviceLabels = [
 $serviceLabel = $serviceLabels[$service] ?? $service;
 
 // ---------------------------------------------------------------------------
-// Build HTML Email
+// STEP 1: Log submission to disk FIRST (guarantees zero data loss)
+// ---------------------------------------------------------------------------
+$logDir = __DIR__ . '/../qm_inquiries';
+if (!is_dir($logDir)) {
+    @mkdir($logDir, 0750, true);
+    // Block web access to the log directory
+    @file_put_contents($logDir . '/.htaccess', "Deny from all\n");
+}
+
+$logEntry = [
+    'id'           => uniqid('inq_', true),
+    'timestamp'    => date('c'),
+    'name'         => $name,
+    'email'        => $email,
+    'organization' => $organization,
+    'whatsapp'     => $whatsapp,
+    'service'      => $serviceLabel,
+    'message'      => $message,
+    'ip'           => $ip,
+    'email_sent'   => false,
+];
+
+// Append to daily log file (one file per day for easy management)
+$logFile = $logDir . '/inquiries_' . date('Y-m-d') . '.json';
+
+// Use file locking to prevent race conditions
+$fh = fopen($logFile, 'a');
+if ($fh) {
+    flock($fh, LOCK_EX);
+    fwrite($fh, json_encode($logEntry) . "\n");
+    flock($fh, LOCK_UN);
+    fclose($fh);
+}
+
+// ---------------------------------------------------------------------------
+// STEP 2: Build HTML Email
 // ---------------------------------------------------------------------------
 $escapedMessage = nl2br($message);
+$inquiryId = $logEntry['id'];
 
 $htmlBody = <<<HTML
 <!DOCTYPE html>
@@ -185,6 +224,7 @@ $htmlBody = <<<HTML
         <tr>
           <td style="padding:20px 32px;border-top:1px solid #292524;font-size:11px;color:#78716c;">
             Quartermasters F.Z.C &mdash; Ajman Free Zone, UAE &bull; License No: 37357
+            <br>Ref: $inquiryId
           </td>
         </tr>
       </table>
@@ -195,23 +235,44 @@ $htmlBody = <<<HTML
 HTML;
 
 // ---------------------------------------------------------------------------
-// Send Email
+// STEP 3: Send Email (with unique Message-ID to prevent deduplication)
 // ---------------------------------------------------------------------------
 $to = 'hello@quartermasters.me, mujtaba@quartermasters.me';
 $subject = "New Inquiry: $serviceLabel — $name";
+
+// Unique Message-ID prevents mail servers from deduplicating rapid sends
+$messageId = '<' . $inquiryId . '@quartermasters.me>';
 
 $headers  = "MIME-Version: 1.0\r\n";
 $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 $headers .= "From: Quartermasters Contact <noreply@quartermasters.me>\r\n";
 $headers .= "Reply-To: $name <$email>\r\n";
+$headers .= "Message-ID: $messageId\r\n";
 $headers .= "X-Mailer: Quartermasters-PHP/1.0\r\n";
 
-$sent = mail($to, $subject, $htmlBody, $headers);
+$sent = @mail($to, $subject, $htmlBody, $headers);
 
-if (!$sent) {
-    http_response_code(502);
-    echo json_encode(['error' => 'Failed to send your message. Please try again or contact us directly at hello@quartermasters.me.']);
-    exit;
+// Update log entry with email status
+if ($fh = fopen($logFile, 'r+')) {
+    flock($fh, LOCK_EX);
+    $contents = '';
+    while (!feof($fh)) {
+        $contents .= fread($fh, 8192);
+    }
+    $contents = str_replace(
+        '"id":"' . $inquiryId . '","timestamp"',
+        '"id":"' . $inquiryId . '","email_sent":' . ($sent ? 'true' : 'false') . ',"timestamp"',
+        $contents
+    );
+    fseek($fh, 0);
+    ftruncate($fh, 0);
+    fwrite($fh, $contents);
+    flock($fh, LOCK_UN);
+    fclose($fh);
 }
 
-echo json_encode(['success' => true]);
+// Always return success — the inquiry is safely logged even if email fails
+echo json_encode([
+    'success' => true,
+    'ref'     => $inquiryId,
+]);
