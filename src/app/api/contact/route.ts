@@ -265,7 +265,7 @@ export async function POST(request: NextRequest) {
     if (sendError) {
       console.error("[contact] Resend error:", sendError);
       return NextResponse.json(
-        { error: "Failed to send your message. Please try again or contact us directly." },
+        { error: `Resend error: ${sendError.message ?? JSON.stringify(sendError)}` },
         { status: 502 },
       );
     }
